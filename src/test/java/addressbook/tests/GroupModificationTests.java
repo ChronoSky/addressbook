@@ -2,6 +2,7 @@ package addressbook.tests;
 
 import addressbook.model.GroupData;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.HashSet;
@@ -9,24 +10,28 @@ import java.util.List;
 
 public class GroupModificationTests extends TestBase {
 
+    @BeforeMethod
+    public void ensurePreconditions(){
+        app.goTo().groupPage();
+        if (app.group().list().size() == 0){
+            app.group().create(new GroupData().withName("test1"));
+        }
+    }
+
     @Test
     public void testGroupModification(){
-        app.getNavigationHelper().gotoGroupPage();
-        if (! app.getGroupHelper().isThereAGroup()){
-            app.getGroupHelper().createGroup(new GroupData("test1", null, null));
-        }
-        List<GroupData> before = app.getGroupHelper().getGroupList();
-        app.getGroupHelper().selectGroup(before.size()-1);
-        app.getGroupHelper().initGroupModififcation();
-        GroupData group = new GroupData(before.get(before.size()-1).getId(),"test2", "test2", "test2");
-        app.getGroupHelper().fillGroupForm(group);
-        app.getGroupHelper().submitGroupModification();
-        app.getGroupHelper().returnToGroupPage();
-        List<GroupData> after = app.getGroupHelper().getGroupList();
+        List<GroupData> before = app.group().list();
+        int index = before.size()-1;
+        int id = before.get(index).getId();
+        GroupData group = new GroupData().withId(id).withName("test2").withHeader("test2").withFooter("test2");
+        app.group().modify(index, group);
+        List<GroupData> after = app.group().list();
         Assert.assertEquals(before.size(), after.size());
 
         before.remove(before.size()-1);
         before.add(group);
         Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
     }
+
+
 }

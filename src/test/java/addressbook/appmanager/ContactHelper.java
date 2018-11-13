@@ -52,9 +52,20 @@ public class ContactHelper extends HelperBase{
         for (WebElement element : elements){
             String lastName = element.findElement(By.xpath(".//td[2]")).getText();
             String firstName = element.findElement(By.xpath(".//td[3]")).getText();
-            ContactData group = new ContactData(firstName, null, lastName, null);
+            ContactData group = new ContactData().withFirstName(firstName).withLastName(lastName);
             contacts.add(group);
         }
         return contacts;
+    }
+
+    public boolean isThereAContact() {
+        List<WebElement> elements = wd.findElements(By.xpath("//*[@id='maintable']//tr[@name='entry']"));
+        return elements.size() > 0 ? true : false;
+    }
+
+    public void createContact(ContactData contact, boolean isGroup) {
+        fillContactForm(contact, isGroup);
+        submitContactCreation();
+        returnToHomePage();
     }
 }

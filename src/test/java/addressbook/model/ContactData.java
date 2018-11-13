@@ -4,29 +4,13 @@ import java.util.Objects;
 
 public class ContactData {
 
-    private int id;
-    private final String firstName;
-    private final String middleName;
-    private final String lastName;
+    private int id = Integer.MAX_VALUE;
+    private String firstName;
+    private String middleName;
+    private String lastName;
     private String group;
 
 
-
-    public ContactData(int id, String firstName, String middleName, String lastName, String group) {
-        this.id = id;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.group = group;
-    }
-
-    public ContactData( String firstName, String middleName, String lastName, String group) {
-        this.id = 0;
-        this.firstName = firstName;
-        this.middleName = middleName;
-        this.lastName = lastName;
-        this.group = group;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -48,9 +32,7 @@ public class ContactData {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     @Override
     public String toString() {
@@ -74,5 +56,30 @@ public class ContactData {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName);
+    }
+
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
+    }
+
+    public ContactData withFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public ContactData withMiddleName(String middleName) {
+        this.middleName = middleName;
+        return this;
+    }
+
+    public ContactData withLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
+        this.group = group;
+        return this;
     }
 }

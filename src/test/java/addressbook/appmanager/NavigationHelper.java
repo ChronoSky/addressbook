@@ -9,18 +9,18 @@ public class NavigationHelper extends HelperBase{
        super(wd);
     }
 
-    public void gotoGroupPage() {
+    public void groupPage() {
         if (isElementPresent(By.xpath("//*[@id='content']/h1")) && wd.findElement(By.xpath("//*[@id='content']/h1")).getText().equals("Groups") && isElementPresent(By.name("new"))){
             return;
         }
         click(By.linkText("groups"));
     }
 
-    public void gotoContactPage() {
+    public void contactPage() {
         click(By.linkText("add new"));
     }
 
-    public void gotoHomePage() {
+    public void homePage() {
         if (isElementPresent(By.id("maintable"))){
             return;
         }
