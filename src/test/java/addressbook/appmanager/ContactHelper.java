@@ -9,7 +9,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactHelper extends HelperBase{
 
@@ -38,21 +40,22 @@ public class ContactHelper extends HelperBase{
         click(By.linkText("home page"));
     }
 
-    public void initContactModification() {
-        click(By.xpath("//img[@title='Edit']"));
+    public void selectContactById(int id) {
+        click(By.xpath("//*[@id='maintable']//tr[@name='entry' and .//input[@id='"+ id +"']]//img[@title='Edit']"));
     }
 
     public void submitContactModification() {
         click(By.name("update"));
     }
 
-    public List<ContactData> getContactList() {
-        List<ContactData> contacts = new ArrayList<ContactData>();
+    public Set<ContactData> all() {
+        Set<ContactData> contacts = new HashSet<ContactData>();
         List<WebElement> elements = wd.findElements(By.xpath("//*[@id='maintable']//tr[@name='entry']"));
         for (WebElement element : elements){
             String lastName = element.findElement(By.xpath(".//td[2]")).getText();
             String firstName = element.findElement(By.xpath(".//td[3]")).getText();
-            ContactData group = new ContactData().withFirstName(firstName).withLastName(lastName);
+            int id = Integer.parseInt(element.findElement(By.tagName("input")).getAttribute("id"));
+            ContactData group = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName);
             contacts.add(group);
         }
         return contacts;
@@ -63,9 +66,16 @@ public class ContactHelper extends HelperBase{
         return elements.size() > 0 ? true : false;
     }
 
-    public void createContact(ContactData contact, boolean isGroup) {
+    public void create(ContactData contact, boolean isGroup) {
         fillContactForm(contact, isGroup);
         submitContactCreation();
+        returnToHomePage();
+    }
+
+    public void modify(ContactData contact) {
+        selectContactById(contact.getId());
+        fillContactForm(contact, false);
+        submitContactModification();
         returnToHomePage();
     }
 }

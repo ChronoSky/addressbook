@@ -28,20 +28,6 @@ public class ContactData {
         return group;
     }
 
-    public int getId() {
-        return id;
-    }
-
-
-
-    @Override
-    public String toString() {
-        return "ContactData{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -56,6 +42,15 @@ public class ContactData {
     @Override
     public int hashCode() {
         return Objects.hash(id, firstName, lastName);
+    }
+
+    @Override
+    public String toString() {
+        return "ContactData{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 
     public ContactData withId(int id) {
@@ -81,5 +76,9 @@ public class ContactData {
     public ContactData withGroup(String group) {
         this.group = group;
         return this;
+    }
+
+    public int getId() {
+        return id;
     }
 }
