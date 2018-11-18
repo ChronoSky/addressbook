@@ -1,12 +1,10 @@
 package addressbook.tests;
 
 import addressbook.model.GroupData;
+import addressbook.model.Groups;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class GroupModificationTests extends TestBase {
 
@@ -20,16 +18,13 @@ public class GroupModificationTests extends TestBase {
 
     @Test
     public void testGroupModification(){
-        Set<GroupData> before = app.group().all();
+        Groups before = app.group().all();
         GroupData modifyGroup = before.iterator().next();
         GroupData group = new GroupData().withId(modifyGroup.getId()).withName("test2").withHeader("test2").withFooter("test2");
         app.group().modify(group);
-        Set<GroupData> after = app.group().all();
+        Groups after = app.group().all();
         Assert.assertEquals(before.size(), after.size());
-
-        before.remove(modifyGroup);
-        before.add(group);
-        Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
+        Assert.assertEquals(after, before.withOut(modifyGroup).withAdded(group));
     }
 
 

@@ -1,6 +1,7 @@
 package addressbook.tests;
 
 import addressbook.model.ContactData;
+import addressbook.model.Contacts;
 import addressbook.model.GroupData;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -24,16 +25,17 @@ public class ContactCreationTests extends TestBase{
     @Test
     public void testContactCreation() {
         app.goTo().homePage();
-        Set<ContactData> before = app.contact().all();
+        Contacts before = app.contact().all();
         ContactData contact = new ContactData().withFirstName("test_FirstName_1").withMiddleName("test_MiddleName_2").withLastName("test_LastName_3").withGroup("test1");
         app.goTo().contactPage();
         app.contact().create(contact, true);
-        Set<ContactData> after = app.contact().all();
+        Contacts after = app.contact().all();
         Assert.assertEquals(before.size(), after.size()-1);
 
         contact.withId(after.stream().mapToInt((g)-> g.getId()).max().getAsInt());
-        before.add(contact);
-        Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
+        Assert.assertEquals(after, before.withAdded(contact));
+
+
     }
 
 

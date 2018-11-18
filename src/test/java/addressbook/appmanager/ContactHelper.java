@@ -1,6 +1,7 @@
 package addressbook.appmanager;
 
 import addressbook.model.ContactData;
+import addressbook.model.Contacts;
 import addressbook.model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -48,8 +49,8 @@ public class ContactHelper extends HelperBase{
         click(By.name("update"));
     }
 
-    public Set<ContactData> all() {
-        Set<ContactData> contacts = new HashSet<ContactData>();
+    public Contacts all() {
+        Contacts contacts = new Contacts();
         List<WebElement> elements = wd.findElements(By.xpath("//*[@id='maintable']//tr[@name='entry']"));
         for (WebElement element : elements){
             String lastName = element.findElement(By.xpath(".//td[2]")).getText();
